@@ -1,12 +1,12 @@
 import axios from "axios";
-import { ENV_VATS } from "../config/envVars.js";
+import { ENV_VARS } from "../config/envVars.js";
 
 export const fetchFromTMDB = async (url) => {
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer ' + ENV_VATS.TMDB_API_KEY
+      Authorization: 'Bearer ' + ENV_VARS.TMDB_API_KEY
     }
   };
   
