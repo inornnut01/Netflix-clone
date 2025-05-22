@@ -45,7 +45,7 @@ export async function getSimilarTvs(req, res) {
   try {
     const { id } = req.params;
     const data = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${id}/similar?language=en-US&page=1`);
-    res.status(200).json({success: true, content: data.results});
+    res.status(200).json({success: true, similar: data.results});
   } catch (error) {
     res.status(500).json({success: false, message: error.message});
   }
