@@ -5,7 +5,7 @@ import { useAuthStore } from '../store/authUser'
 function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { login } = useAuthStore()
+  const { login, isLoggingIn } = useAuthStore()
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -53,8 +53,11 @@ function LoginPage() {
               />
             </div>
 
-            <button type='submit' className='w-full bg-red-600 text-white py-2 px-4 font-semibold rounded-md hover:bg-red-700 transition-colors'>
-              Login
+            <button type='submit' className='w-full bg-red-600 text-white py-2 px-4 font-semibold rounded-md hover:bg-red-700 transition-colors'
+              disabled={isLoggingIn}
+            >
+
+              {isLoggingIn ? "Loading..." : "Login"}
             </button>
 
             <div className='text-center text-sm text-gray-400'>
