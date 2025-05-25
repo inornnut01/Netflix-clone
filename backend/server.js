@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import { ENV_VARS } from "./config/envVars.js";
 import { protectRoute } from "./middleware/protectRoute.js";
@@ -13,17 +14,29 @@ import connectMongoDB from "./config/db.js";
 
 const app = express();
 const PORT = ENV_VARS.PORT;
+const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// API routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/movie", protectRoute, movieRoutes);
 app.use("/api/v1/tv", protectRoute, tvRoutes);
 app.use("/api/v1/search", protectRoute, searchRoutes);
 
+// Serve static files and handle SPA routing in production
+if (ENV_VARS.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, "/frontend/dist")));
+	
+	// This should be the last route
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+	});
+}
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  connectMongoDB();
+	console.log(`Server is running on port ${PORT}`);
+	connectMongoDB();
 });
